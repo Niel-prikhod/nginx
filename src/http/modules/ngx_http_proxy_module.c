@@ -1983,6 +1983,18 @@ ngx_http_proxy_process_header(ngx_http_request_t *r)
                 }
             }
 
+#if	(NGX_HTTP_CACHE)
+		h = ngx_list_push(&r->headers_out.headers);
+		if (h == NULL) {
+			return NGX_ERROR;
+		}
+		h->hash = 1;
+        ngx_str_set(&h->key, "X-Cache-Key");
+		h->lowcase_key = (u_char *) "x-cache-key";
+		ngx_str_set(&h->value, r->cache->key);
+		h->next = NULL;
+#endif
+
             return NGX_OK;
         }
 

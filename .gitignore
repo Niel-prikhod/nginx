@@ -1,3 +1,5 @@
 /Makefile
 /objs/
 /tmp/
+.cache
+compile_commands.json
