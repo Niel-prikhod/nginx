@@ -1991,7 +1991,11 @@ ngx_http_proxy_process_header(ngx_http_request_t *r)
 		h->hash = 1;
         ngx_str_set(&h->key, "X-Cache-Key");
 		h->lowcase_key = (u_char *) "x-cache-key";
-		ngx_str_set(&h->value, r->cache->key);
+	    h->value.data = ngx_pnalloc(r->pool, 32);
+		if (h->value.data == NULL)
+			return NGX_ERROR;
+		ngx_hex_dump(h->value.data, r->cache->key, 16);
+		h->value.len = 32;
 		h->next = NULL;
 #endif
 
